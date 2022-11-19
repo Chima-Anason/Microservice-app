@@ -5,6 +5,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>customer</module>
+        <module>fraud</module>
     </modules>
 
     <groupId>com.anagracetech</groupId>
