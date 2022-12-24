@@ -22,7 +22,7 @@ public class NotificationApplication {
     }
 
 
-    @Bean
+    /*@Bean
     CommandLineRunner commandLineRunner(RabbitMQMessageProducer producer,
                                         NotificationConfig notificationConfig){
         return args -> {
@@ -33,5 +33,5 @@ public class NotificationApplication {
         };
     }
 
-    record Person(String name, int age){}
+    record Person(String name, int age){}*/
 }

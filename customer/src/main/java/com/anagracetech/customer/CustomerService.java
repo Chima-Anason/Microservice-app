@@ -1,5 +1,6 @@
 package com.anagracetech.customer;
 
+import com.anagracetech.amqp.RabbitMQMessageProducer;
 import com.anagracetech.clients.fraud.FraudCheckResponse;
 import com.anagracetech.clients.fraud.FraudClient;
 import com.anagracetech.clients.notification.NotificationClient;
@@ -14,7 +15,7 @@ public class CustomerService {
     private final CustomerRepository customerRepository;
     private final RestTemplate restTemplate;
     private final FraudClient fraudClient;
-    private final NotificationClient notificationClient;
+    private final RabbitMQMessageProducer rabbitMQMessageProducer;
 
     public void registerCustomer(CustomerRegisterationRequest request) {
         Customer customer = Customer.builder()
@@ -35,13 +36,16 @@ public class CustomerService {
 
         // todo: send notification
         // todo: make it async. i.e add to queue
-        notificationClient.sendNotification(
-                new NotificationRequest(
-                        customer.getId(),
-                        customer.getEmail(),
-                        String.format("Hi %s, welcome to AnagraceTech....",
-                                customer.getFirstName())
-                )
+        NotificationRequest notificationRequest = new NotificationRequest(
+                customer.getId(),
+                customer.getEmail(),
+                String.format("Hi %s, welcome to AnagraceTech....",
+                        customer.getFirstName())
+        );
+        rabbitMQMessageProducer.publish(
+                notificationRequest,
+                "internal.exchange",
+                "internal.notification.routing-key"
         );
     }
 }
