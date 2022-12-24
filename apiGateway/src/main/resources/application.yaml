@@ -1,5 +1,6 @@
 server:
-  port:8083
+  port: 8083
+
 spring:
   application:
     name: api-gateway
@@ -8,8 +9,8 @@ spring:
   cloud:
     gateway:
       routes:
-        - id : customer
-          uri : lb://CUSTOMER
+        - id: customer
+          uri: http://localhost:8080/
           predicates:
             - Path=/api/v1/customers/**
 
